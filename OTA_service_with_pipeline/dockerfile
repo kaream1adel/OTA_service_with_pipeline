@@ -1,0 +1,18 @@
+# Use a slim Python base image
+FROM python:3.9
+
+# Set the working directory within the container
+WORKDIR /app
+
+# Copy only the necessary files (app.py and requirements.txt)
+COPY OTA-server.py .
+COPY requirements.txt .
+
+# Install Flask and other dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose port 5000
+EXPOSE 5000
+
+# Run the Flask application
+CMD ["python", "OTA-server.py"]

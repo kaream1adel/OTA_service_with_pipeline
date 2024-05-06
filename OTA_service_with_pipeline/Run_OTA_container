@@ -1,0 +1,14 @@
+#! /bin/bash
+
+
+state="$1"
+
+if ((state == 3));then
+    docker start APP >/dev/null 2>&1 
+
+    echo "APP container START"
+else
+    docker run -d --name APP -p 3000:3000 -e NODE_EXTRA_CA_CERTS=ca.pem kaream10/app:latest >/dev/null 2>&1
+    echo "---------------------------------APP container up & running--------------------------"
+    docker ps
+fi

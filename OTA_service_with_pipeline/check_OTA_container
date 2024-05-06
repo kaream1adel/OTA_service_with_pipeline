@@ -1,0 +1,47 @@
+#! /bin/bash
+
+
+DOCKER_CONTAINER=APP
+
+state="$1"
+# echo $state
+#  if ((state == 1));then 
+#  echo $state
+#  fi
+
+if (docker ps -a --format '{{.Names}}' | grep -q "^${DOCKER_CONTAINER}\$"); then   #found container : firstly check if stopped or not then check its update or not
+
+    # Use 'docker inspect' command to retrieve container information in JSON format
+        container_info=$(docker inspect "$DOCKER_CONTAINER" 2>/dev/null)
+        
+
+        # Check if the container information was retrieved successfully
+        if [[ -n "$container_info" ]]; then
+        
+            # Extract the container's state from the JSON output
+            container_state=$(echo "$container_info" | jq -r '.[0].State.Status')
+
+            # Check if the container is stopped
+            if [[ "$container_state" == "exited" ]]; then
+                echo "Container '$DOCKER_CONTAINER' is found but its state is stopped."
+                ./Run_OTA_container 3
+            fi
+        fi
+    if ((state == 1));then 
+    echo '---------------------START UPDATE-----------------------'
+    # Container exists, stop and remove it
+    docker stop "${DOCKER_CONTAINER}" >/dev/null 2>&1  # Stop the container silently
+    docker rm "${DOCKER_CONTAINER}" >/dev/null 2>&1    # Remove the container silently
+    echo " Old Container '${DOCKER_CONTAINER}' has been removed."
+    chmod +x Run_OTA_container
+    ./Run_OTA_container
+    fi
+
+else                                                        
+
+    # Container does not exist
+    echo "Container '${DOCKER_CONTAINER}' does not exist."
+    chmod +x Run_OTA_container
+    ./Run_OTA_container
+fi
+
