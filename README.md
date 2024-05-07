@@ -1,5 +1,6 @@
 # OTA_service_with_pipeline
 
+SCENARIO:
 a.	OTA-client.py app checks every 10 seconds for a new push to kaream/app repo for a new version of app image.
  
 b.	APP GitHub repo updated by developers which trigger Jenkins APP pipeline build job by GitHub webhook and the pipeline pushed the new image to docker hub.
