@@ -1,6 +1,6 @@
 # OTA_service_with_pipeline
 
-SCENARIO:
+#SCENARIO:
 
 a.	OTA-client.py app checks every 10 seconds for a new push to kaream/app repo for a new version of app image.
  
